@@ -1,0 +1,39 @@
+name: PHP CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  php-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql
+
+      - name: PHP syntax check
+        run: |
+          find . -type f -name "*.php" \
+            ! -path "./vendor/*" \
+            ! -path "./.git/*" \
+            -print0 | xargs -0 -n1 php -l
+
+      - name: Check required application files
+        run: |
+          test -f index.php
+          test -f biodata.php
+          test -f kuesioner.php
+          test -f proses_biodata.php
+          test -f proses_survey.php
+          test -f config/database.php
+          test -f admin/index.php
+          test -f admin/login.php

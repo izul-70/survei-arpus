@@ -1,0 +1,23 @@
+name: Status Check
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  verify-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify project structure
+        run: |
+          echo "Repository structure verification"
+          ls -la
+          echo "README present:"
+          test -f README.md && echo ok
+          echo "Admin folder present:"
+          test -d admin && echo ok

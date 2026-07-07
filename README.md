@@ -1,7 +1,8 @@
+# Survey Kepuasan Masyarakat - Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan
+
 NAMA  : IZUL KHAEROH
 NIM   : 101230070
 KELAS : TF23C
-# Survey Kepuasan Masyarakat - Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan
 
 Aplikasi survei kepuasan masyarakat (SKM) berbasis web untuk mengukur kepuasan pengguna layanan publik di lingkungan Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan.
 
@@ -355,4 +356,8 @@ Proyek internal Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan.
 | `README.md` | ☐ | ☐ | ☐ Synced |
 | `AGENT.md` | ☐ | ☐ | ☐ Synced |
 
+<<<<<<< HEAD
 > **Tip:** Gunakan `git status`, `git diff`, dan GitHub web UI (Compare & pull request) untuk verify sync.
+=======
+> **Tip:** Gunakan `git status`, `git diff`, dan GitHub web UI (Compare & pull request) untuk verify sync.
+>>>>>>> d3649b0 (Update README with tech stack and modules)
