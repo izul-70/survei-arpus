@@ -3,72 +3,59 @@ NIM   : 101230070
 KELAS : TF23C
 # Survey Kepuasan Masyarakat - Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan
 
-Aplikasi survei kepuasan masyarakat (SKM) untuk Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan.
+Aplikasi survei kepuasan masyarakat (SKM) berbasis web untuk mengukur kepuasan pengguna layanan publik di lingkungan Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan.
 
-## 📋 Tech Stack
+## 📋 Tech Stack / Stack yang Digunakan
 
 ### Backend
-- **PHP 8.x** - Server-side scripting
-- **PDO (PHP Data Objects)** - Database abstraction layer
-- **MySQL/MariaDB** - Database relasional
-- **PDO Prepared Statements** - Prepared statements untuk keamanan SQL injection
-- **PHP Sessions** - Session management untuk autentikasi admin & session survei
+- **PHP 8.x** - Logika server-side dan proses bisnis
+- **PDO (PHP Data Objects)** - Koneksi database yang aman dan fleksibel
+- **MySQL/MariaDB** - Database utama penyimpanan data survei
+- **Prepared Statements** - Perlindungan dari SQL injection
+- **PHP Sessions** - Manajemen sesi login admin dan alur survei
 
 ### Frontend
-- **HTML5** - Markup semantik
-- **CSS3** - Custom CSS dengan CSS Variables (Custom Properties)
-- **Vanilla JavaScript (ES6+)** - Vanilla JS tanpa framework
-- **Swiper.js v11** - Slider/carousel untuk laporan SKM (via CDN)
-- **CSS Variables** - Design system dengan custom properties (--biru, --hijau, dll)
-- **Responsive Design** - Mobile-first responsive design dengan CSS Grid/Flexbox
+- **HTML5** - Struktur halaman
+- **CSS3** - Styling dan desain responsif
+- **Vanilla JavaScript (ES6+)** - Interaksi halaman tanpa framework
+- **Swiper.js v11** - Slider/carousel laporan SKM
+- **CSS Variables** - Variabel desain seperti warna utama dan elemen visual
 
 ### Database
-- **MySQL/MariaDB** - Database utama
-- **Table: survey_responses** - Menyimpan respons survei (9 pertanyaan + saran + biodata + metadata)
+- **MySQL/MariaDB** - Database relasional utama
+- **Tabel utama:** `survey_responses` - menyimpan biodata, jawaban 9 pertanyaan, saran, rata-rata, predikat, dan metadata survey
 
-### Libraries & CDN
-- **Swiper.js v11** (via jsDelivr CDN) - Touch slider untuk carousel laporan SKM
-- **Google Fonts** (jika digunakan via CDN di header.php)
-
-### Development Tools
-- **XAMPP** - Local development environment (Apache + MySQL + PHP)
+### Tools & Environment
+- **XAMPP** - Local development (Apache + MySQL + PHP)
 - **Git** - Version control
-- **GitHub** - Remote repository hosting
+- **GitHub** - Hosting repository dan kolaborasi
 
 ---
 
-## 📦 Modules & Features
+## 📦 Modul & Fitur Utama
 
-### 1. **Public Frontend (Frontend Publik)**
-| Modul | Fitur |
-|-------|-------|
-| **Landing Page** (`index.php`) | Dashboard publik dengan indeks kepuasan masyarakat (IKM), filter tahun, slider laporan SKM tahunan |
-| **Biodata** (`biodata.php`) | Form pengisian biodata responden (nama, JK, umur, WA, pendidikan, pekerjaan, kecamatan, jenis layanan) |
-| **Kuesioner** (`kuesioner.php`) | Survei 9 pertanyaan dengan UI emoji rating (4 level: Sangat Baik/Sesuai → Tidak Baik/Tidak Sesuai) + kolom saran |
-| **Thank You** (`thanks.php`) | Halaman ucapan terima kasih setelah submit survei |
+### 1. Frontend Publik
+- **Landing Page** (`index.php`) - Menampilkan indeks kepuasan masyarakat (IKM), filter tahun, dan slider laporan SKM tahunan
+- **Biodata** (`biodata.php`) - Form input biodata responden seperti nama, jenis kelamin, usia, nomor WA, pendidikan, pekerjaan, kecamatan, dan jenis layanan
+- **Kuesioner** (`kuesioner.php`) - Survei 9 pertanyaan dengan UI emoji rating dan kolom saran
+- **Thank You** (`thanks.php`) - Halaman penutup setelah survei selesai
 
-### 2. **Admin Panel** (`admin/`)
-| Modul | Fitur |
-|-------|-------|
-| **Login** (`login.php`) | Autentikasi admin (session-based, hardcoded credentials) |
-| **Dashboard** (`index.php`) | - Statistik per tahun (rata-rata skor, jumlah responden)<br>- Analisis kelemahan per pertanyaan (rata-rata per q1-q9)<br>- Filter: Tahun, Kecamatan, Pencarian nama/WA<br>- Pagination (20 per halaman)<br>- Export Excel |
-| **Export Excel** (`export_excel.php`) | Export data survei ke Excel (filter sesuai dashboard) |
-| **Delete Data** (`delete.php`) | Hapus data responden individual |
-| **Logout** (`logout.php`) | Logout & destroy session |
+### 2. Panel Admin
+- **Login** (`admin/login.php`) - Autentikasi admin berbasis session
+- **Dashboard** (`admin/index.php`) - Menampilkan statistik per tahun, analisis skor per pertanyaan, filter tahun/kecamatan, pencarian nama/nomor WA, pagination, dan export Excel
+- **Export Excel** (`admin/export_excel.php`) - Ekspor data hasil survei ke file Excel
+- **Delete Data** (`admin/delete.php`) - Hapus data responden per baris
+- **Logout** (`admin/logout.php`) - Mengakhiri sesi admin
 
-### 3. **Backend Processing**
-| File | Fungsi |
-|------|--------|
-| `proses_biodata.php` | Validasi & simpan biodata ke session, redirect ke kuesioner |
-| `proses_survey.php` | Validasi 9 pertanyaan wajib + saran, hitung rata-rata, simpan ke DB, redirect ke thanks.php |
-| `konfig.php` / `config/database.php` | Koneksi PDO ke MySQL + session_start() |
+### 3. Backend Processing
+- **`proses_biodata.php`** - Validasi dan simpan data biodata ke session sebelum masuk ke kuesioner
+- **`proses_survey.php`** - Validasi jawaban wajib, hitung rata-rata, simpan ke database, lalu redirect ke halaman terima kasih
+- **`config/database.php`** - Koneksi PDO ke database MySQL dan pengaturan session
 
-### 4. **Shared Components**
-| File | Fungsi |
-|------|--------|
-| `header.php` | Header HTML, CSS variables, meta tags, navigation |
-| `footer.php` | Footer HTML, closing tags |
-| `buat_admin.php` | Script one-time setup untuk membuat user admin default |
+### 4. Shared Components
+- **`header.php`** - Bagian header, meta tag, navigasi, dan desain global
+- **`footer.php`** - Penutup halaman dan elemen footer
+- **`buat_admin.php`** - Script setup admin default untuk keperluan development
 
 ---
 
@@ -368,4 +355,4 @@ Proyek internal Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan.
 | `README.md` | ☐ | ☐ | ☐ Synced |
 | `AGENT.md` | ☐ | ☐ | ☐ Synced |
 
-> **Tip:** Gunakan `git status`, `git diff`, dan GitHub web UI (Compare & pull request) untuk verify sync.abupaten Pekalongan.
+> **Tip:** Gunakan `git status`, `git diff`, dan GitHub web UI (Compare & pull request) untuk verify sync.
