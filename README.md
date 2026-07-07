@@ -189,3 +189,183 @@ survey_arpus/
 
 ## 📄 License
 Proyek internal Dinas Kearsipan dan Perpustakaan Kabupaten Pekalongan.
+
+---
+
+## ✅ GitHub Task Checklist (Checklist di GitHub)
+
+> **Cara pakai:** Centang kotak `[ ]` → `[x]` langsung di GitHub UI (README.md di repo GitHub).
+> Gunakan untuk tracking progress development, testing, dan deployment.
+
+### 🔧 Setup & Configuration
+- [ ] Clone repository ke lokal
+- [ ] Start XAMPP (Apache + MySQL)
+- [ ] Create database `survey_arpus` di phpMyAdmin
+- [ ] Import `survey_arpus.sql` (schema + seed data)
+- [ ] Import `tambah_data_2023_2025.sql` (data tambahan)
+- [ ] Jalankan `buat_admin.php` sekali untuk create admin user
+- [ ] Verify akses `http://localhost/survey_arpus/`
+- [ ] Verify akses admin `http://localhost/survey_arpus/admin/login.php` (admin/admin123)
+
+### 🎯 Public Frontend Testing
+#### Landing Page (`index.php`)
+- [ ] Load halaman tanpa error
+- [ ] Tampil IKM (Indeks Kepuasan Masyarakat) dengan skor & predikat
+- [ ] Filter tahun dropdown berfungsi
+- [ ] Slider laporan SKM (Swiper.js) berjalan (autoplay, nav, pagination)
+- [ ] Link laporan PDF ke Google Drive terbuka di tab baru
+- [ ] Tombol "MULAI SURVEI" redirect ke `biodata.php`
+- [ ] Responsive di mobile (≤768px) & desktop
+- [ ] Logo & gambar tampil (gambar.png, dinas.png, bangga.png, berakhlaq.png)
+
+#### Biodata (`biodata.php`)
+- [ ] Form tampil lengkap (nama, JK, usia, WA, pendidikan, pekerjaan, kecamatan, layanan)
+- [ ] Validasi client-side (required fields)
+- [ ] Submit redirect ke `kuesioner.php`
+- [ ] Data tersimpan di `$_SESSION['biodata']`
+- [ ] Responsive mobile/desktop
+
+#### Kuesioner (`kuesioner.php`)
+- [ ] Redirect dari biodata berfungsi
+- [ ] 9 pertanyaan tampil berurutan (step-by-step)
+- [ ] Emoji rating 4 level per pertanyaan (100, 75, 50, 25)
+- [ ] Seleksi emoji update hidden input & visual feedback (selected)
+- [ ] Validasi: harus pilih emoji sebelum "SELANJUTNYA"
+- [ ] Navigasi Next/Back berfungsi
+- [ ] Step 10: Saran (textarea optional)
+- [ ] Submit "SIMPAN JAWABAN" → `proses_survey.php`
+- [ ] Responsive mobile/desktop
+
+#### Proses Survey (`proses_survey.php`)
+- [ ] Validasi 9 pertanyaan wajib terisi
+- [ ] Hitung rata-rata skor (q1-q9 / 9)
+- [ ] Tentukan predikat (SANGAT BAIK/BAIK/CUKUP/KURANG)
+- [ ] Insert ke `survey_responses` (biodata + q1-q9 + saran + tahun + rata + predikat)
+- [ ] Redirect ke `thanks.php`
+- [ ] Session biodata dihapus setelah submit
+
+#### Thank You (`thanks.php`)
+- [ ] Tampil pesan terima kasih
+- [ ] Link "Kembali ke Beranda" berfungsi
+
+### 🔐 Admin Panel Testing
+#### Login (`admin/login.php`)
+- [ ] Form login tampil
+- [ ] Validasi username/password
+- [ ] Login berhasil → redirect ke `admin/index.php` + set `$_SESSION['admin_logged']`
+- [ ] Login gagal → tampil error
+- [ ] Session protection: akses `admin/index.php` tanpa login → redirect ke login
+
+#### Dashboard (`admin/index.php`)
+- [ ] Sidebar navigasi (Semua Data, Logout)
+- [ ] Header dengan logout button
+- [ ] Statistik card per tahun (rata-rata %, jumlah responden, warna predikat)
+- [ ] Analisis skor per pertanyaan (Q1-Q9 dengan color coding: hijau/kuning/merah)
+- [ ] Filter: Tahun dropdown, Kecamatan dropdown, Search nama/WA
+- [ ] Tombol Filter & Reset berfungsi
+- [ ] Tabel data: pagination (20/halaman), sorting by created_at DESC
+- [ ] Kolom: No, Nama, JK, Usia, Kecamatan, Layanan, Tahun, Q1-Q9, Skor, Predikat (badge), Saran, Aksi
+- [ ] Badge predikat warna: hijau (SANGAT BAIK), biru (BAIK), kuning (KURANG BAIK)
+- [ ] Tombol Hapus per baris → konfirmasi → `delete.php`
+- [ ] Export Excel → `export_excel.php` (dengan filter yg sama)
+- [ ] Pagination berfungsi (next, prev, page number)
+- [ ] Responsive mobile (sidebar collapse, horizontal scroll tabel)
+
+#### Export Excel (`admin/export_excel.php`)
+- [ ] Download file .xls/.xlsx
+- [ ] Data sesuai filter (tahun, kecamatan, search)
+- [ ] Header kolom lengkap
+- [ ] Encoding UTF-8 (karakter Indonesia benar)
+
+#### Delete (`admin/delete.php`)
+- [ ] Hapus data by ID
+- [ ] Redirect kembali ke `index.php` dengan page & filter params
+- [ ] Success message tampil
+
+#### Logout (`admin/logout.php`)
+- [ ] Destroy session
+- [ ] Redirect ke login.php
+- [ ] Tidak bisa akses dashboard setelah logout
+
+### 🗄 Database Verification
+- [ ] Table `survey_responses` ter-create dengan index (tahun, kecamatan, created_at)
+- [ ] Table `admin_users` ter-create dengan password hash
+- [ ] Seed data 2023, 2024, 2025 ter-insert
+- [ ] Insert manual via survei publik → data masuk DB benar
+- [ ] Kolom `rata_rata` & `predikat` ter-hitung otomatis di `proses_survey.php`
+- [ ] Foreign key / constraint tidak diperlukan (standalone table)
+
+### 🔒 Security & Best Practices
+- [ ] PDO Prepared Statements di semua query (no SQL injection)
+- [ ] `htmlspecialchars()` di semua output user-generated
+- [ ] Session_start() di semua file yang butuh session
+- [ ] Admin session check di setiap file admin/
+- [ ] Password admin di-hash (bcrypt via `buat_admin.php`)
+- [ ] No hardcoded credentials di production code
+- [ ] No `localhost` URL di production (relative paths only)
+- [ ] Error handling: try-catch PDO, die() dengan pesan user-friendly
+
+### 📱 UI/UX & Responsive
+- [ ] CSS Variables (--biru, --hijau, dll) konsisten di semua halaman
+- [ ] Mobile-first: ≤768px stack layout, touch-friendly
+- [ ] Desktop: sidebar fixed, grid layout, hover effects
+- [ ] Color coding predikat konsisten (hijau/biru/kuning/merah)
+- [ ] Loading state / feedback pada aksi user
+- [ ] Font size, spacing, contrast accessible
+- [ ] Swiper.js slider touch/swipe di mobile
+- [ ] Table horizontal scroll di mobile dengan container overflow-x
+
+### 🧪 Cross-Browser Testing
+- [ ] Chrome (latest)
+- [ ] Firefox (latest)
+- [ ] Edge (latest)
+- [ ] Safari (jika tersedia)
+- [ ] Mobile Chrome (Android)
+- [ ] Mobile Safari (iOS)
+
+### 🚀 Deployment Checklist
+- [ ] Push ke GitHub (`git add . && git commit -m "msg" && git push`)
+- [ ] GitHub Actions CI/CD pass (jika dikonfigurasi)
+- [ ] Deploy ke hosting (shared hosting / VPS / cloud)
+- [ ] Setup database di production
+- [ ] Update config database.php untuk production credentials
+- [ ] Ganti password admin default
+- [ ] Setup HTTPS/SSL
+- [ ] Test semua fitur di production URL
+- [ ] Backup database & files berkala
+
+### 📋 Documentation
+- [ ] README.md up-to-date
+- [ ] AGEN.md workflow dokumentasi
+- [ ] Comment kode fungsi kompleks
+- [ ] Changelog / version history
+
+---
+
+## 🔍 Compare & Sync Checklist (GitHub ↔ Local)
+
+| Item | Local | GitHub | Status |
+|------|-------|--------|--------|
+| `index.php` | ☐ | ☐ | ☐ Synced |
+| `biodata.php` | ☐ | ☐ | ☐ Synced |
+| `kuesioner.php` | ☐ | ☐ | ☐ Synced |
+| `thanks.php` | ☐ | ☐ | ☐ Synced |
+| `proses_biodata.php` | ☐ | ☐ | ☐ Synced |
+| `proses_survey.php` | ☐ | ☐ | ☐ Synced |
+| `konfig.php` | ☐ | ☐ | ☐ Synced |
+| `config/database.php` | ☐ | ☐ | ☐ Synced |
+| `header.php` | ☐ | ☐ | ☐ Synced |
+| `footer.php` | ☐ | ☐ | ☐ Synced |
+| `buat_admin.php` | ☐ | ☐ | ☐ Synced |
+| `survey_arpus.sql` | ☐ | ☐ | ☐ Synced |
+| `tambah_data_2023_2025.sql` | ☐ | ☐ | ☐ Synced |
+| `admin/index.php` | ☐ | ☐ | ☐ Synced |
+| `admin/login.php` | ☐ | ☐ | ☐ Synced |
+| `admin/logout.php` | ☐ | ☐ | ☐ Synced |
+| `admin/export_excel.php` | ☐ | ☐ | ☐ Synced |
+| `admin/delete.php` | ☐ | ☐ | ☐ Synced |
+| `images/` (4 files) | ☐ | ☐ | ☐ Synced |
+| `README.md` | ☐ | ☐ | ☐ Synced |
+| `AGENT.md` | ☐ | ☐ | ☐ Synced |
+
+> **Tip:** Gunakan `git status`, `git diff`, dan GitHub web UI (Compare & pull request) untuk verify sync.abupaten Pekalongan.
