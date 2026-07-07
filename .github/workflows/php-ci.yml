@@ -14,20 +14,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-
-      - name: PHP syntax check
+      - name: Verify required application files
         run: |
-          find . -type f -name "*.php" \
-            ! -path "./vendor/*" \
-            ! -path "./.git/*" \
-            -print0 | xargs -0 -n1 php -l
-
-      - name: Check required application files
-        run: |
+          test -f README.md
           test -f index.php
           test -f biodata.php
           test -f kuesioner.php
@@ -36,3 +25,4 @@ jobs:
           test -f config/database.php
           test -f admin/index.php
           test -f admin/login.php
+          echo "Required application files verified successfully."

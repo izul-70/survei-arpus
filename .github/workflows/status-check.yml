@@ -17,7 +17,6 @@ jobs:
         run: |
           echo "Repository structure verification"
           ls -la
-          echo "README present:"
-          test -f README.md && echo ok
-          echo "Admin folder present:"
-          test -d admin && echo ok
+          test -f README.md
+          test -d admin
+          echo "Repository structure verified successfully."
